@@ -1,3 +1,11 @@
+# SOFTENG750 Group20 - Copper Crocodile
+
+<!-- prettier-ignore -->
+| CI                  | Status   |
+| ------------------- | -------- |
+| Tests               | [![Tests](https://github.com/lucas2005gao/Group-20-Copper-Crocodile/actions/workflows/tests.yml/badge.svg)](https://github.com/lucas2005gao/Group-20-Copper-Crocodile/actions/workflows/tests.yml) |
+| ESLint and Prettier | [![ESLint and Prettier](https://github.com/lucas2005gao/Group-20-Copper-Crocodile/actions/workflows/eslint_and_prettier.yml/badge.svg)](https://github.com/lucas2005gao/Group-20-Copper-Crocodile/actions/workflows/eslint_and_prettier.yml) |
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
