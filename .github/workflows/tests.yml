@@ -13,10 +13,21 @@ jobs:
     steps:
       - name: Check out Git repository
         uses: actions/checkout@v2
+
       - name: Set up Node.js
         uses: actions/setup-node@v1
         with:
           node-version: 10
-      - run: npm ci
-      - run: npm run build --if-present
-      - run: npm test
+
+      # ESLint and Prettier must be in `package.json`
+      - name: Install Node.js dependencies
+        working-directory: ./frontend
+        run: npm ci
+
+      - name: Run build
+        working-directory: ./frontend
+        run: npm run build --if-present
+
+      - name: Run tests
+        working-directory: ./frontend
+        run: npm test
