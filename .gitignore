@@ -10,7 +10,7 @@
 /coverage
 
 # production
-/build
+/frontend/build
 
 # misc
 .DS_Store
@@ -30,3 +30,13 @@ yarn-error.log*
 !.vscode/launch.json
 !.vscode/extensions.json
 *.code-workspace
+
+
+### CypressIO ###
+
+frontend/cypress/results/*
+frontend/cypress/reports/*
+frontend/cypress/screenshots/*
+frontend/cypress/videos/*
+
+# End of https://www.toptal.com/developers/gitignore/api/cypressio
