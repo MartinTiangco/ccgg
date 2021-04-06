@@ -6,9 +6,9 @@
     "cypress/globals": true
   },
   "extends": [
-    "plugin:react/recommended", 
-    "airbnb", 
-    "prettier", 
+    "plugin:react/recommended",
+    "airbnb",
+    "prettier",
     "plugin:cypress/recommended"
   ],
   "parserOptions": {
@@ -32,12 +32,15 @@
     "jest/valid-expect": "error",
     "prettier/prettier": ["error", { "endOfLine": "auto" }],
     "cypress/assertion-before-screenshot": "warn",
-    "cypress/no-force": "warn"
+    "cypress/no-force": "warn",
+    "no-unused-vars": "warn"
   },
-  "overrides": [{
-    "files": [ "cypress/integration/*" ],
-    "rules": {
-      "jest/valid-expect": 0
+  "overrides": [
+    {
+      "files": ["cypress/integration/*"],
+      "rules": {
+        "jest/valid-expect": 0
+      }
     }
-  }]
+  ]
 }
