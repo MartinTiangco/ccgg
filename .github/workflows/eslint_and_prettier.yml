@@ -30,9 +30,7 @@ jobs:
         run: npm run lint
 
       - name: Backend - Install Node.js dependencies
-        working-directory: ./backend
         run: npm ci
 
       - name: Backend - Run linters
-        working-directory: ./backend
         run: npm run lint

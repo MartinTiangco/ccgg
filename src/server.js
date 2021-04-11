@@ -1,6 +1,6 @@
 const createError = require("http-errors");
 const express = require("express");
-// const path = require("path");
+const path = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const connectToDatabase = require("./database/db-connect");
@@ -14,6 +14,8 @@ app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+
+app.use(express.static(path.join(__dirname, "frontend", "build")));
 
 // use API routers for different URLs
 app.use("/", indexRouter);
@@ -32,6 +34,10 @@ app.use((err, req, res) => {
   // render the error page
   res.status(err.status || 500);
   res.send(`Error: ${err.status} - ${err.message}`);
+});
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "frontend", "build", "index.html"));
 });
 
 // Connect to the database

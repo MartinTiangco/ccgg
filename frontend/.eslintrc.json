@@ -8,8 +8,8 @@
   "extends": [
     "plugin:react/recommended",
     "airbnb",
-    "prettier",
-    "plugin:cypress/recommended"
+    "plugin:cypress/recommended",
+    "plugin:prettier/recommended"
   ],
   "parserOptions": {
     "ecmaFeatures": {
@@ -42,5 +42,6 @@
         "jest/valid-expect": 0
       }
     }
-  ]
+  ],
+  "root": true
 }
