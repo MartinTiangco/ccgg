@@ -2,15 +2,13 @@
   "env": {
     "browser": true,
     "es2021": true,
-    "jest/globals": true,
-    "cypress/globals": true
+    "jest/globals": true
   },
   "extends": [
     "plugin:react/recommended",
     "airbnb",
-    "plugin:cypress/recommended",
-    "plugin:prettier/recommended",
-    "plugin:jest/recommended"
+    "plugin:jest/recommended",
+    "plugin:prettier/recommended"
   ],
   "parserOptions": {
     "ecmaFeatures": {
@@ -31,8 +29,6 @@
     "jest/prefer-to-have-length": "warn",
     "jest/valid-expect": "error",
     "prettier/prettier": ["error", { "endOfLine": "auto" }],
-    "cypress/assertion-before-screenshot": "warn",
-    "cypress/no-force": "warn",
     "no-unused-vars": "warn"
   },
   "overrides": [

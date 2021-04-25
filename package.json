@@ -7,11 +7,13 @@
     "test": "jest --testPathIgnorePatterns=frontend/",
     "lint": "eslint --ext .js,.jsx .",
     "lint:fix": "eslint --fix --ext .js,.jsx .",
+    "cypress:open": "cd frontend && cypress open",
+    "cy:run": "cd frontend && cypress run",
     "heroku-postbuild": "cd frontend && npm install --only=dev && npm install && npm run build"
   },
   "engines": {
     "node": "12.18.4",
-    "npm" : "6.14.4"
+    "npm": "6.14.4"
   },
   "dependencies": {
     "common-tags": "^1.8.0",
@@ -27,6 +29,7 @@
     "@babel/preset-env": "^7.13.12",
     "@types/jest": "^26.0.22",
     "babel-jest": "^26.6.3",
+    "cypress": "^7.1.0",
     "eslint": "^7.23.0",
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-config-prettier": "^8.1.0",

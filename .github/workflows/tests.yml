@@ -41,7 +41,7 @@ jobs:
         uses: cypress-io/github-action@v2
         with:
           start: npm start
-          working-directory: frontend
+          project: ./frontend
 
   backend-tests:
     runs-on: ubuntu-latest
