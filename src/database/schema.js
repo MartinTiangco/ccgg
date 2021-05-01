@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import passwordValidationMessage from "./constants";
 
 const { Schema } = mongoose;
 
@@ -10,23 +11,26 @@ const userSchema = new Schema(
     username: {
       type: String,
       unique: true,
+      required: true,
     },
     sub: {
       type: String,
       unique: true,
+      required: true,
     },
     password: {
       type: String,
+      required: true,
       validate: {
         validator(v) {
           return /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})/.test(v);
         },
-        message:
-          "Password must contain minimum eight characters, at least one uppercase letter, one lowercase letter and one number.",
+        message: passwordValidationMessage,
       },
     },
     riotID: {
       type: String,
+      required: true,
     },
     region: {
       type: String,
@@ -43,9 +47,7 @@ const userSchema = new Schema(
         "RU",
         "TR",
       ],
-      required() {
-        return this.riotID !== "";
-      },
+      required: true,
     },
     friends: [{ username: String, riotID: String }],
   },
