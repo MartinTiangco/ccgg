@@ -1,4 +1,6 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
+
+const DEFAULT_CONNECTION_STRING = "mongodb://localhost:27017/users";
 
 // Connection URI to the MongoDB database
 const password = process.env.DB_USER_PW;
@@ -22,4 +24,12 @@ async function connectToDatabase() {
   }
 }
 
-module.exports = connectToDatabase;
+export const connectToLocalDatabase = (
+  connectionString = DEFAULT_CONNECTION_STRING
+) =>
+  mongoose.connect(connectionString, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  });
+
+export default connectToDatabase;

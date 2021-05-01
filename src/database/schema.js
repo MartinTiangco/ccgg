@@ -11,11 +11,15 @@ const userSchema = new Schema(
       type: String,
       unique: true,
     },
+    sub: {
+      type: String,
+      unique: true,
+    },
     password: {
       type: String,
       validate: {
         validator(v) {
-          return /^(?=.*[a-z])(?=.*[A-Z])(?=.*d)[a-zA-Zd]{8,}$/.test(v);
+          return /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})/.test(v);
         },
         message:
           "Password must contain minimum eight characters, at least one uppercase letter, one lowercase letter and one number.",

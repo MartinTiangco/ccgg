@@ -1,11 +1,12 @@
-const createError = require("http-errors");
-const express = require("express");
-const path = require("path");
-const cookieParser = require("cookie-parser");
-const logger = require("morgan");
+import createError from "http-errors";
+import express from "express";
+import path from "path";
+import cookieParser from "cookie-parser";
 
-const connectToDatabase = require("./database/db-connect");
-const indexRouter = require("./routes/index");
+import connectToDatabase from "./database/db-connect";
+import routes from "./routes/index";
+
+const logger = require("morgan");
 
 const port = process.env.PORT || "3001";
 
@@ -19,7 +20,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 // use API routers for different URLs
-app.use("/api", indexRouter);
+app.use("/", routes);
 
 // This middleware informs the express application to serve our compiled React files
 if (
