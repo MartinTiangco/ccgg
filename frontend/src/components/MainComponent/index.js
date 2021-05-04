@@ -80,6 +80,7 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.up("sm")]: {
       flexDirection: "row",
     },
+    margin: "20px",
   },
   innerGrid: {
     margin: "0 auto",
@@ -90,7 +91,6 @@ const useStyles = makeStyles((theme) => ({
   },
   card: {
     padding: theme.spacing(2),
-    backgroundColor: theme.palette.background.card.main,
     color: theme.palette.text.secondary,
   },
 }));
@@ -120,6 +120,7 @@ const MainComponent = () => {
           <Paper className={classes.paper} elevation={0}>
             <Typography align="center" variant="h5">
               Summary
+              <div style={{ height: "1000px" }} />
             </Typography>
           </Paper>
         </Grid>
