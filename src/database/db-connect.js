@@ -1,4 +1,7 @@
 import mongoose from "mongoose";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const DEFAULT_CONNECTION_STRING = "mongodb://localhost:27017/users";
 

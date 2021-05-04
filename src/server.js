@@ -2,9 +2,9 @@ import createError from "http-errors";
 import express from "express";
 import path from "path";
 import cookieParser from "cookie-parser";
-
 import connectToDatabase from "./database/db-connect";
 import routes from "./routes/index";
+import checkJwt from "./auth/server";
 
 const logger = require("morgan");
 
@@ -18,6 +18,7 @@ app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(checkJwt);
 
 // use API routers for different URLs
 app.use("/", routes);

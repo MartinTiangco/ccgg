@@ -5,6 +5,7 @@ import {
   deleteFriend,
   retrieveFriends,
 } from "../../database/friends-dao";
+import checkJwt from "../../auth/server";
 
 const router = express.Router();
 
@@ -12,12 +13,11 @@ const router = express.Router();
  * Retrieves all friends of a user.
  * Possible status codes:
  * 200 - if the user exists. An array of friends is returned in the body, which can be empty.
+ * 401 - if the user is not authenticated
  * 404 - if the user does not exist.
  */
-router.get("/", async (req, res) => {
-  const userSub = req.user ? req.user.sub : req.body.sub; // TODO: remove req.body.sub once authentication is implemented. The tests put a dummy userSub in req.body.sub for now.
-
-  const friends = await retrieveFriends(userSub);
+router.get("/", checkJwt, async (req, res) => {
+  const friends = await retrieveFriends(req.user.sub);
 
   // user is not found
   if (!friends) {
@@ -33,15 +33,15 @@ router.get("/", async (req, res) => {
  * Possible status codes:
  * 204 - if friend is successfully added.
  * 400 - if trying to add a friend that is already in the friends list
+ * 401 - if the user is not authenticated
  * 404 - if the user you're trying to add a friend to, does not exist.
  */
-router.put("/", async (req, res) => {
-  const userSub = req.user ? req.user.sub : req.body.sub; // TODO: remove req.body.sub once authentication is implemented. The tests put a dummy userSub in req.body.sub for now.
+router.put("/", checkJwt, async (req, res) => {
   const { username, riotID } = req.body;
 
   // add friend
   const newFriend = { username, riotID };
-  const result = await addFriend(userSub, newFriend);
+  const result = await addFriend(req.user.sub, newFriend);
   res.sendStatus(result);
 });
 
@@ -49,13 +49,13 @@ router.put("/", async (req, res) => {
  * Deletes a friend from the user.
  * Possible status codes:
  * 204 - if friend is either deleted or cannot be found in the friends list.
+ * 401 - if the user is not authenticated
  * 404 - if the user you're trying to delete friends from, does not exist.
  */
-router.delete("/", async (req, res) => {
-  const userSub = req.user ? req.user.sub : req.body.sub; // TODO: remove req.body.sub once authentication is implemented. The tests put a dummy userSub in req.body.sub for now.
+router.delete("/", checkJwt, async (req, res) => {
   const { username, riotID } = req.body;
 
-  const success = await deleteFriend(userSub, { username, riotID });
+  const success = await deleteFriend(req.user.sub, { username, riotID });
   res.sendStatus(success ? HTTP_NO_CONTENT : HTTP_NOT_FOUND);
 });
 

@@ -2,15 +2,19 @@ import { MongoMemoryServer } from "mongodb-memory-server";
 import mongoose from "mongoose";
 import express from "express";
 import axios from "axios";
-
+import dotenv from "dotenv";
 import { connectToLocalDatabase } from "../../../database/db-connect";
 import routes from "../friends";
 import User from "../../../database/schema";
+import getToken from "./jwtMock";
+import checkJwt from "../../../auth/server";
+
+dotenv.config();
 
 let mongodb;
 let app;
 let server;
-const port = 3000;
+const port = 3001;
 
 // Dummy data
 const user1 = {
@@ -29,6 +33,16 @@ const user2 = {
   region: "OCE",
   friends: [],
 };
+
+const user3 = {
+  username: "Willll",
+  sub: "test|2",
+};
+
+const token1 = getToken(user1);
+const token2 = getToken(user2);
+const token3 = getToken(user3);
+
 const dummyUsers = [user1, user2];
 
 // Start database and server before any tests run
@@ -40,6 +54,7 @@ beforeAll(async () => {
   app = express();
   app.use(express.json());
   app.use("/api/friends", routes);
+  app.use(checkJwt);
 
   server = app.listen(port);
 });
@@ -62,15 +77,34 @@ afterAll(async () => {
   });
 });
 
-const makeRequest = async ({ method, url, data }) =>
-  axios({ method, url, data });
+const makeRequest = async ({ method, url, data, headers }) =>
+  axios({ method, url, data, headers });
 
 describe("GET endpoint", () => {
+  it("throws 401 if unauhorized", async () => {
+    await makeRequest({
+      method: "get",
+      url: "http://localhost:3001/api/friends",
+      data: {},
+      headers: {
+        Authorization: "Bearer ",
+      },
+    }).catch((err) => {
+      const {
+        response: { status },
+      } = err;
+      expect(status).toBe(401);
+    });
+  });
+
   it("retrieves a list of friends", async () => {
     const response = await makeRequest({
       method: "get",
-      url: "http://localhost:3000/api/friends",
-      data: { sub: "test|0" }, // TODO: delete 'sub' after implementing auth
+      url: "http://localhost:3001/api/friends",
+      data: {},
+      headers: {
+        Authorization: `Bearer ${token1}`,
+      },
     });
 
     const { data, status } = response;
@@ -86,8 +120,11 @@ describe("GET endpoint", () => {
   it("retrieves an empty list of friends", async () => {
     const response = await makeRequest({
       method: "get",
-      url: "http://localhost:3000/api/friends",
-      data: { sub: "test|1" }, // TODO: delete 'sub' after implementing auth
+      url: "http://localhost:3001/api/friends",
+      data: {},
+      headers: {
+        Authorization: `Bearer ${token2}`,
+      },
     });
 
     const { data, status } = response;
@@ -99,12 +136,16 @@ describe("GET endpoint", () => {
   it("throws 404 if user is not found", async () => {
     await makeRequest({
       method: "get",
-      url: "http://localhost:3000/api/friends",
-      data: { sub: "test|2" }, // TODO: delete 'sub' after implementing auth
+      url: "http://localhost:3001/api/friends",
+      data: {},
+      headers: {
+        Authorization: `Bearer ${token3}`,
+      },
     }).catch((err) => {
       const {
         response: { status },
       } = err;
+      // console.log(err);
       expect(status).toBe(404);
     });
   });
@@ -114,8 +155,11 @@ describe("PUT endpoint", () => {
   it("adds a new friend", async () => {
     const response = await makeRequest({
       method: "put",
-      url: "http://localhost:3000/api/friends",
-      data: { sub: "test|1", username: user1.username, riotID: user1.riotID }, // TODO: delete 'sub' after implementing auth
+      url: "http://localhost:3001/api/friends",
+      data: { username: user1.username, riotID: user1.riotID },
+      headers: {
+        Authorization: `Bearer ${token2}`,
+      },
     });
 
     const { status } = response;
@@ -123,7 +167,9 @@ describe("PUT endpoint", () => {
     expect(status).toBe(204);
 
     // check updated friends list
-    const dbUser = await User.findOne({ sub: "test|1" });
+    const dbUser = await User.findOne({
+      sub: user2.sub,
+    });
     expect(dbUser.friends).toHaveLength(1);
     expect(dbUser.friends[0].username).toBe(user1.username);
     expect(dbUser.friends[0].riotID).toBe(user1.riotID);
@@ -132,8 +178,11 @@ describe("PUT endpoint", () => {
   it("throws 404 if user is not found", async () => {
     await makeRequest({
       method: "put",
-      url: "http://localhost:3000/api/friends",
-      data: { sub: "test|2" }, // TODO: delete 'sub' after implementing auth
+      url: "http://localhost:3001/api/friends",
+      data: {},
+      headers: {
+        Authorization: `Bearer ${token3}`,
+      },
     }).catch((err) => {
       const {
         response: { status },
@@ -145,8 +194,11 @@ describe("PUT endpoint", () => {
   it("throws 400 if trying to add an already existing friend", async () => {
     await makeRequest({
       method: "put",
-      url: "http://localhost:3000/api/friends",
-      data: { sub: "test|0", username: user2.username, riotID: user2.riotID }, // TODO: delete 'sub' after implementing auth
+      url: "http://localhost:3001/api/friends",
+      data: { username: user2.username, riotID: user2.riotID },
+      headers: {
+        Authorization: `Bearer ${token1}`,
+      },
     }).catch((err) => {
       const {
         response: { status },
@@ -155,7 +207,9 @@ describe("PUT endpoint", () => {
     });
 
     // check that the friends list didn't update
-    const dbUser = await User.findOne({ sub: "test|0" });
+    const dbUser = await User.findOne({
+      sub: user1.sub,
+    });
     expect(dbUser.friends).toHaveLength(1);
   });
 });
@@ -164,8 +218,11 @@ describe("DELETE endpoint", () => {
   it("deletes a friend", async () => {
     const response = await makeRequest({
       method: "delete",
-      url: "http://localhost:3000/api/friends",
-      data: { sub: "test|0", username: user2.username, riotID: user2.riotID }, // TODO: delete 'sub' after implementing auth
+      url: "http://localhost:3001/api/friends",
+      data: { username: user2.username, riotID: user2.riotID },
+      headers: {
+        Authorization: `Bearer ${token1}`,
+      },
     });
 
     const { status } = response;
@@ -173,15 +230,20 @@ describe("DELETE endpoint", () => {
     expect(status).toBe(204);
 
     // check updated friends list
-    const dbUser = await User.findOne({ sub: "test|0" });
+    const dbUser = await User.findOne({
+      sub: user1.sub,
+    });
     expect(dbUser.friends).toHaveLength(0);
   });
 
   it("deletes a friend that is not in the user's friend list", async () => {
     const response = await makeRequest({
       method: "delete",
-      url: "http://localhost:3000/api/friends",
-      data: { sub: "test|0", username: "non-existent", riotID: "non-existent" }, // TODO: delete 'sub' after implementing auth
+      url: "http://localhost:3001/api/friends",
+      data: { username: "non-existent", riotID: "non-existent" },
+      headers: {
+        Authorization: `Bearer ${token1}`,
+      },
     });
 
     const { status } = response;
@@ -189,15 +251,20 @@ describe("DELETE endpoint", () => {
     expect(status).toBe(204);
 
     // friends list should not be edited
-    const dbUser = await User.findOne({ sub: "test|0" });
+    const dbUser = await User.findOne({
+      sub: user1.sub,
+    });
     expect(dbUser.friends).toHaveLength(1);
   });
 
   it("throws 404 if user is not found", async () => {
     await makeRequest({
       method: "delete",
-      url: "http://localhost:3000/api/friends",
-      data: { sub: "test|2" }, // TODO: delete 'sub' after implementing auth
+      url: "http://localhost:3001/api/friends",
+      data: {},
+      headers: {
+        Authorization: `Bearer ${token3}`,
+      },
     }).catch((err) => {
       const {
         response: { status },

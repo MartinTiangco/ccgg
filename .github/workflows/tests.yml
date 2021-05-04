@@ -17,10 +17,17 @@ jobs:
       - name: Check out Git repository
         uses: actions/checkout@v2
 
+      - uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
       - name: Set up Node.js
         uses: actions/setup-node@v1
         with:
-          node-version: 10
+          node-version: 12
 
       # ESLint and Prettier must be in `package.json`
       - name: Install Node.js dependencies
@@ -31,6 +38,9 @@ jobs:
 
       - name: Run tests
         run: npm test
+        env:
+          REACT_APP_AUTH0_DOMAIN: ccgg.au.auth0.com
+          REACT_APP_AUTH0_CLIENT_ID: z7sP6jElX3oaQ8GByEcfafIOpXlyTQza
 
   cypress-run:
     runs-on: ubuntu-16.04
@@ -50,10 +60,17 @@ jobs:
       - name: Check out Git repository
         uses: actions/checkout@v2
 
+      - uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
       - name: Set up Node.js
         uses: actions/setup-node@v1
         with:
-          node-version: 10
+          node-version: 12
 
       # ESLint and Prettier must be in `package.json`
       - name: Install Node.js dependencies
@@ -64,3 +81,7 @@ jobs:
 
       - name: Run tests
         run: npm test
+        env:
+          DB_USER_PW: LlzokscQI0EaIcPa
+          AUTH0_API_DOMAIN: ccgg.au.auth0.com
+          AUTH0_API_IDENTIFIER: https://cc.gg/api

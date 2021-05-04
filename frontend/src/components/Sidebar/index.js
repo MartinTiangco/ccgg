@@ -1,17 +1,10 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Link, useLocation } from "react-router-dom";
-import {
-  Box,
-  Tooltip,
-  MenuItem,
-  MenuList,
-  Hidden,
-  IconButton,
-} from "@material-ui/core";
-import MeetingRoomIcon from "@material-ui/icons/MeetingRoom";
+import { Box, Tooltip, MenuItem, MenuList, Hidden } from "@material-ui/core";
 import clsx from "clsx";
 import { SidebarData } from "./SidebarData";
+import LoginLogoutButton from "./LoginLogoutButton";
 import logos from "../../images";
 
 const useStyles = makeStyles((theme) => ({
@@ -27,9 +20,6 @@ const useStyles = makeStyles((theme) => ({
     position: "fixed",
   },
   logoBox: {
-    height: "10%",
-  },
-  exitIconBox: {
     height: "10%",
   },
   menuRoot: {
@@ -56,9 +46,6 @@ const useStyles = makeStyles((theme) => ({
   logoImg: {
     width: "80%",
     marginTop: "10px",
-  },
-  exitIcon: {
-    fontSize: 50,
   },
 }));
 
@@ -98,15 +85,7 @@ function Sidebar() {
             })}
           </Box>
         </MenuList>
-        <Box
-          display="flex"
-          flexDirection="column"
-          className={classes.exitIconBox}
-        >
-          <IconButton className={classes.autoLeftRightMargin}>
-            <MeetingRoomIcon className={classes.exitIcon} />
-          </IconButton>
-        </Box>
+        <LoginLogoutButton />
       </div>
     </Hidden>
   );
