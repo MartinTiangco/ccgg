@@ -5,6 +5,11 @@ const ccggBlue = {
   dark: "#26304B",
 };
 
+const ccggWhite = {
+  main: "#ECF0F1",
+  dark: "#ECF0F1",
+};
+
 const ccggBackground = {
   default: "#354060",
   paper: "#435273",
@@ -13,6 +18,7 @@ const ccggBackground = {
 const theme = createMuiTheme({
   palette: {
     primary: ccggBlue,
+    secondary: ccggWhite,
     type: "dark",
     background: ccggBackground,
   },
