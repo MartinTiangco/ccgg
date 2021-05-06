@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import passwordValidationMessage from "./constants";
 
 const { Schema } = mongoose;
 
@@ -18,17 +17,7 @@ const userSchema = new Schema(
       unique: true,
       required: true,
     },
-    password: {
-      type: String,
-      required: true,
-      validate: {
-        validator(v) {
-          return /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})/.test(v);
-        },
-        message: passwordValidationMessage,
-      },
-    },
-    riotID: {
+    summonerName: {
       type: String,
       required: true,
     },
@@ -49,7 +38,7 @@ const userSchema = new Schema(
       ],
       required: true,
     },
-    friends: [{ username: String, riotID: String }],
+    friends: [{ username: String, summonerName: String }],
   },
   {
     timestamps: {},

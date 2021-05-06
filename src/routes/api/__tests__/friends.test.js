@@ -20,16 +20,14 @@ const port = 3001;
 const user1 = {
   username: "Plasmatops",
   sub: "test|0",
-  password: "123ABCabc",
-  riotID: "Plasmatops",
+  summonerName: "Plasmatops",
   region: "OCE",
-  friends: [{ username: "mAGO32Lu1", riotID: "mAGO32Lu1" }],
+  friends: [{ username: "mAGO32Lu1", summonerName: "mAGO32Lu1" }],
 };
 const user2 = {
   username: "mAGO32Lu1",
   sub: "test|1",
-  password: "123ABCabc",
-  riotID: "mAGO32Lu1",
+  summonerName: "mAGO32Lu1",
   region: "OCE",
   friends: [],
 };
@@ -109,12 +107,12 @@ describe("GET endpoint", () => {
 
     const { data, status } = response;
 
-    const user1Friend = { username: "mAGO32Lu1", riotID: "mAGO32Lu1" };
+    const user1Friend = { username: "mAGO32Lu1", summonerName: "mAGO32Lu1" };
 
     expect(status).toBe(200);
     expect(data).toHaveLength(1);
     expect(data[0].username).toBe(user1Friend.username);
-    expect(data[0].riotID).toBe(user1Friend.riotID);
+    expect(data[0].summonerName).toBe(user1Friend.summonerName);
   });
 
   it("retrieves an empty list of friends", async () => {
@@ -156,7 +154,7 @@ describe("PUT endpoint", () => {
     const response = await makeRequest({
       method: "put",
       url: "http://localhost:3001/api/friends",
-      data: { username: user1.username, riotID: user1.riotID },
+      data: { username: user1.username, summonerName: user1.summonerName },
       headers: {
         Authorization: `Bearer ${token2}`,
       },
@@ -172,7 +170,7 @@ describe("PUT endpoint", () => {
     });
     expect(dbUser.friends).toHaveLength(1);
     expect(dbUser.friends[0].username).toBe(user1.username);
-    expect(dbUser.friends[0].riotID).toBe(user1.riotID);
+    expect(dbUser.friends[0].summonerName).toBe(user1.summonerName);
   });
 
   it("throws 404 if user is not found", async () => {
@@ -195,7 +193,7 @@ describe("PUT endpoint", () => {
     await makeRequest({
       method: "put",
       url: "http://localhost:3001/api/friends",
-      data: { username: user2.username, riotID: user2.riotID },
+      data: { username: user2.username, summonerName: user2.summonerName },
       headers: {
         Authorization: `Bearer ${token1}`,
       },
@@ -219,7 +217,7 @@ describe("DELETE endpoint", () => {
     const response = await makeRequest({
       method: "delete",
       url: "http://localhost:3001/api/friends",
-      data: { username: user2.username, riotID: user2.riotID },
+      data: { username: user2.username, summonerName: user2.summonerName },
       headers: {
         Authorization: `Bearer ${token1}`,
       },
@@ -240,7 +238,7 @@ describe("DELETE endpoint", () => {
     const response = await makeRequest({
       method: "delete",
       url: "http://localhost:3001/api/friends",
-      data: { username: "non-existent", riotID: "non-existent" },
+      data: { username: "non-existent", summonerName: "non-existent" },
       headers: {
         Authorization: `Bearer ${token1}`,
       },

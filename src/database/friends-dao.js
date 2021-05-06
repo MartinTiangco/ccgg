@@ -1,14 +1,14 @@
-import retrieveUser from "./user-dao";
+import { retrieveUser } from "./user-dao";
 import {
   HTTP_NOT_FOUND,
   HTTP_BAD_REQUEST,
   HTTP_NO_CONTENT,
 } from "../routes/constants";
 
-// We get the current user, and update to add a friend which consists of { username: String, riotID: String }
+// We get the current user, and update to add a friend which consists of { username: String, summonerName: String }
 const addFriend = async (userSub, newFriend) => {
   const user = await retrieveUser(userSub);
-  const { username, riotID } = newFriend;
+  const { username, summonerName } = newFriend;
 
   // not found
   if (!user) {
@@ -20,7 +20,8 @@ const addFriend = async (userSub, newFriend) => {
   // check if we're adding a friend that is already in the friends list
   if (
     friends.find(
-      (friend) => friend.username === username && friend.riotID === riotID
+      (friend) =>
+        friend.username === username && friend.summonerName === summonerName
     )
   ) {
     return HTTP_BAD_REQUEST;
@@ -52,7 +53,7 @@ const retrieveFriends = async (userSub) => {
  * @param {*} param1
  * @returns false if user is not found. Otherwise, true (even if the friend to be deleted is not found)
  */
-const deleteFriend = async (userSub, { username, riotID }) => {
+const deleteFriend = async (userSub, { username, summonerName }) => {
   const user = await retrieveUser(userSub);
   if (!user) {
     return false;
@@ -60,7 +61,8 @@ const deleteFriend = async (userSub, { username, riotID }) => {
 
   const { friends } = user;
   const updatedFriends = friends.filter(
-    (friend) => friend.username !== username && friend.riotID !== riotID
+    (friend) =>
+      friend.username !== username && friend.summonerName !== summonerName
   );
 
   user.friends = updatedFriends;

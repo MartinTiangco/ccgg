@@ -18,7 +18,6 @@ app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(checkJwt);
 
 // use API routers for different URLs
 app.use("/", routes);

@@ -37,10 +37,10 @@ router.get("/", checkJwt, async (req, res) => {
  * 404 - if the user you're trying to add a friend to, does not exist.
  */
 router.put("/", checkJwt, async (req, res) => {
-  const { username, riotID } = req.body;
+  const { username, summonerName } = req.body;
 
   // add friend
-  const newFriend = { username, riotID };
+  const newFriend = { username, summonerName };
   const result = await addFriend(req.user.sub, newFriend);
   res.sendStatus(result);
 });
@@ -53,9 +53,9 @@ router.put("/", checkJwt, async (req, res) => {
  * 404 - if the user you're trying to delete friends from, does not exist.
  */
 router.delete("/", checkJwt, async (req, res) => {
-  const { username, riotID } = req.body;
+  const { username, summonerName } = req.body;
 
-  const success = await deleteFriend(req.user.sub, { username, riotID });
+  const success = await deleteFriend(req.user.sub, { username, summonerName });
   res.sendStatus(success ? HTTP_NO_CONTENT : HTTP_NOT_FOUND);
 });
 
