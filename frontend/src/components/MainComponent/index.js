@@ -3,6 +3,9 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Card, Grid, Paper, Typography } from "@material-ui/core";
 import Rank from "./Rank";
 import BestChampions from "./BestChampions";
+import RecentMatches from "./RecentMatches";
+
+import testMatches from "./RecentMatches/testData";
 
 // LEAGUE-V4 returns a set of LeagueEntryDTO (a LeagueEntryDTO includes a rank)
 // i.e. if a player has a RankedSolo and RankedFlex rank it'll return two LeagueEntryDTOs
@@ -121,16 +124,13 @@ const MainComponent = () => {
           <Paper className={classes.paper} elevation={0}>
             <Typography align="center" variant="h5">
               Summary
-              <div style={{ height: "1000px" }} />
             </Typography>
           </Paper>
         </Grid>
         <Grid item>
-          <Paper className={classes.paper} elevation={0}>
-            <Typography align="center" variant="h5">
-              Recent Games
-            </Typography>
-          </Paper>
+          <Card className={classes.card} raised>
+            <RecentMatches recentMatches={testMatches} />
+          </Card>
         </Grid>
       </Grid>
       <Grid
