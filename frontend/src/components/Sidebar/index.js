@@ -4,7 +4,7 @@ import { Link, useLocation } from "react-router-dom";
 import { Box, Tooltip, MenuItem, MenuList, Hidden } from "@material-ui/core";
 import clsx from "clsx";
 import { SidebarData } from "./SidebarData";
-import LoginLogoutButton from "./LoginLogoutButton";
+import AuthenticationButton from "./AuthenticationButton";
 import logos from "../../images";
 
 const useStyles = makeStyles((theme) => ({
@@ -85,7 +85,7 @@ function Sidebar() {
             })}
           </Box>
         </MenuList>
-        <LoginLogoutButton />
+        <AuthenticationButton />
       </div>
     </Hidden>
   );

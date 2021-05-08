@@ -26,11 +26,11 @@ const LoginButton = () => {
       flexDirection="column"
       className={classes.LoginLogoutIconBox}
     >
-      <IconButton className={classes.autoLeftRightMargin}>
-        <PersonIcon
-          onClick={() => loginWithRedirect()}
-          className={classes.LoginLogoutIcon}
-        />
+      <IconButton
+        onClick={() => loginWithRedirect()}
+        className={classes.autoLeftRightMargin}
+      >
+        <PersonIcon className={classes.LoginLogoutIcon} />
       </IconButton>
     </Box>
   );
@@ -45,22 +45,19 @@ const LogoutButton = () => {
       flexDirection="column"
       className={classes.LoginLogoutIconBox}
     >
-      <IconButton className={classes.autoLeftRightMargin}>
-        <ExitToAppIcon
-          onClick={() => logout({ returnTo: window.location.origin })}
-          className={classes.LoginLogoutIcon}
-        />
+      <IconButton
+        onClick={() => logout({ returnTo: window.location.origin })}
+        className={classes.autoLeftRightMargin}
+      >
+        <ExitToAppIcon className={classes.LoginLogoutIcon} />
       </IconButton>
     </Box>
   );
 };
 
-const LoginLogoutButton = () => {
+const AuthenticationButton = () => {
   const { isAuthenticated } = useAuth0();
-  if (!isAuthenticated) {
-    return <LoginButton />;
-  }
-  return <LogoutButton />;
+  return isAuthenticated ? <LogoutButton /> : <LoginButton />;
 };
 
-export default LoginLogoutButton;
+export default AuthenticationButton;
