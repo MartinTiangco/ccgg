@@ -1,0 +1,97 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`snapshot with no games 1`] = `
+<div
+  className="MuiGrid-root MuiGrid-container MuiGrid-direction-xs-column"
+>
+  <div
+    className="MuiGrid-root MuiGrid-container MuiGrid-item MuiGrid-align-items-xs-center MuiGrid-justify-xs-space-between"
+  >
+    <h5
+      className="MuiTypography-root MuiTypography-h5"
+    >
+      Recent Performance
+    </h5>
+    <div
+      className="MuiFormControl-root makeStyles-formControl-4"
+    >
+      <label
+        className="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink MuiInputLabel-outlined MuiFormLabel-filled"
+        data-shrink={true}
+        style={
+          Object {
+            "color": "white",
+          }
+        }
+      >
+        Filter By
+      </label>
+      <div
+        className="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-formControl"
+        onClick={[Function]}
+      >
+        <div
+          aria-haspopup="listbox"
+          aria-labelledby="demo-simple-select-outlined-label demo-simple-select-outlined"
+          className="MuiSelect-root MuiSelect-select MuiSelect-selectMenu MuiSelect-outlined MuiInputBase-input MuiOutlinedInput-input"
+          id="demo-simple-select-outlined"
+          onBlur={[Function]}
+          onFocus={[Function]}
+          onKeyDown={[Function]}
+          onMouseDown={[Function]}
+          role="button"
+          tabIndex={0}
+        >
+          Show All
+        </div>
+        <input
+          aria-hidden={true}
+          className="MuiSelect-nativeInput"
+          onAnimationStart={[Function]}
+          onChange={[Function]}
+          required={false}
+          tabIndex={-1}
+          value="Show All"
+        />
+        <svg
+          aria-hidden={true}
+          className="MuiSvgIcon-root MuiSelect-icon MuiSelect-iconOutlined"
+          focusable="false"
+          viewBox="0 0 24 24"
+        >
+          <path
+            d="M7 10l5 5 5-5z"
+          />
+        </svg>
+        <fieldset
+          aria-hidden={true}
+          className="PrivateNotchedOutline-root-5 MuiOutlinedInput-notchedOutline"
+        >
+          <legend
+            className="PrivateNotchedOutline-legendLabelled-7 PrivateNotchedOutline-legendNotched-8"
+          >
+            <span>
+              Gamemode
+            </span>
+          </legend>
+        </fieldset>
+      </div>
+    </div>
+  </div>
+  <div
+    className="MuiGrid-root MuiGrid-container MuiGrid-item MuiGrid-direction-xs-column MuiGrid-align-items-xs-center MuiGrid-justify-xs-center"
+  >
+    <svg
+      aria-hidden={true}
+      className="MuiSvgIcon-root"
+      focusable="false"
+      viewBox="0 0 24 24"
+    >
+      <path
+        d="M11 15h2v2h-2zm0-8h2v6h-2zm.99-5C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"
+      />
+    </svg>
+    No data found!
+  </div>
+</div>
+`;

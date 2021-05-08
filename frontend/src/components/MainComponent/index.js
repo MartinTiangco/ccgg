@@ -1,13 +1,15 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { Card, Grid, Paper, Typography } from "@material-ui/core";
+import { Card, Grid } from "@material-ui/core";
 import Rank from "./Rank";
 import BestChampions from "./BestChampions";
 import RecentMatches from "./RecentMatches";
 import Header from "./Header";
+import Summary from "./Summary";
 
 import testMatches from "./RecentMatches/testData";
 import summonerInfo from "./Header/testData";
+import matches from "./Summary/testMatches";
 
 // LEAGUE-V4 returns a set of LeagueEntryDTO (a LeagueEntryDTO includes a rank)
 // i.e. if a player has a RankedSolo and RankedFlex rank it'll return two LeagueEntryDTOs
@@ -126,11 +128,9 @@ const MainComponent = () => {
           <Header summonerInfo={summonerInfo} />
         </Grid>
         <Grid item>
-          <Paper className={classes.paper} elevation={0}>
-            <Typography align="center" variant="h5">
-              Summary
-            </Typography>
-          </Paper>
+          <Card className={classes.card} raised>
+            <Summary matches={matches} />
+          </Card>
         </Grid>
         <Grid item>
           <Card className={classes.card} raised>
