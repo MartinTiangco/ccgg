@@ -1,8 +1,8 @@
-import User from "./schema";
+import { User } from "./schema";
 import { HTTP_BAD_REQUEST, HTTP_NO_CONTENT } from "../routes/constants";
 
 // add user
-const addUser = async (newUser) => {
+export const addUser = async (newUser) => {
   const user = await User.findOne({ sub: newUser.sub });
 
   if (user) {
@@ -19,9 +19,9 @@ const addUser = async (newUser) => {
 };
 
 // retrieve the User using the unique 'sub' identifier
-const retrieveUser = async (sub) => {
+export const retrieveUser = async (sub) => {
   const user = await User.findOne({ sub });
   return user;
 };
 
-export { retrieveUser, addUser };
+// export default { retrieveUser, addUser };

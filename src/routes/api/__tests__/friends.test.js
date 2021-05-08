@@ -5,7 +5,7 @@ import axios from "axios";
 import dotenv from "dotenv";
 import { connectToLocalDatabase } from "../../../database/db-connect";
 import routes from "../friends";
-import User from "../../../database/schema";
+import { User } from "../../../database/schema";
 import getToken from "./jwtMock";
 import checkJwt from "../../../auth/server";
 
@@ -44,7 +44,8 @@ const token3 = getToken(user3);
 const dummyUsers = [user1, user2];
 
 // Start database and server before any tests run
-beforeAll(async () => {
+// eslint-disable-next-line jest/no-done-callback
+beforeAll(async (done) => {
   mongodb = new MongoMemoryServer();
 
   await mongodb.getUri().then((cs) => connectToLocalDatabase(cs));
@@ -54,7 +55,7 @@ beforeAll(async () => {
   app.use("/api/friends", routes);
   app.use(checkJwt);
 
-  server = app.listen(port);
+  server = app.listen(port, () => done());
 });
 
 // Populate database with dummy data before each test
@@ -68,10 +69,12 @@ afterEach(async () => {
 });
 
 // Stop db and server before we finish
-afterAll(async () => {
+// eslint-disable-next-line jest/no-done-callback
+afterAll(async (done) => {
   server.close(async () => {
     await mongoose.disconnect();
     await mongodb.stop();
+    done();
   });
 });
 
@@ -143,7 +146,6 @@ describe("GET endpoint", () => {
       const {
         response: { status },
       } = err;
-      // console.log(err);
       expect(status).toBe(404);
     });
   });

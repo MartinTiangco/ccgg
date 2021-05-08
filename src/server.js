@@ -2,12 +2,14 @@ import createError from "http-errors";
 import express from "express";
 import path from "path";
 import cookieParser from "cookie-parser";
+import dontenv from "dotenv";
+
 import connectToDatabase from "./database/db-connect";
 import routes from "./routes/index";
-import checkJwt from "./auth/server";
 
 const logger = require("morgan");
 
+dontenv.config();
 const port = process.env.PORT || "3001";
 
 const resolvedDirPath = path.resolve("./frontend/build");
