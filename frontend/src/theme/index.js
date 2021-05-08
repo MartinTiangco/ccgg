@@ -8,6 +8,7 @@ const ccggBlue = {
 const ccggWhite = {
   main: "#ECF0F1",
   dark: "#ECF0F1",
+  lessOpacity: "rgba(236,240,241,0.9)",
 };
 
 const ccggBackground = {
