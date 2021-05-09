@@ -3,13 +3,12 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Link, useLocation } from "react-router-dom";
 import { Box, Tooltip, MenuItem, MenuList, Hidden } from "@material-ui/core";
 import clsx from "clsx";
-import { store } from "react-notifications-component";
+
 import { SidebarData } from "./SidebarData";
 import AuthenticationButton from "./AuthenticationButton";
 import logos from "../../images";
 import "react-notifications-component/dist/theme.css";
 import "animate.css";
-import PingPopupContent from "../PingPopup/PingPopupContent";
 
 const useStyles = makeStyles((theme) => ({
   sidebarPlaceHolder: {
@@ -57,21 +56,6 @@ function Sidebar() {
   const classes = useStyles();
   const location = useLocation();
 
-  // Handler for pinging friends
-  const handleOnClick = (pingedBy) => {
-    store.addNotification({
-      content: <PingPopupContent pingedBy={pingedBy} />,
-      type: "default", // 'default', 'success', 'info', 'warning'
-      container: "top-right", // where to position the notifications
-      width: 500,
-      animationIn: ["animate__animated animate__fadeIn"], // `animate.css v4` classes
-      animationOut: ["animate__animated animate__fadeOut"], // `animate.css v4` classes
-      dismiss: {
-        duration: 3000,
-        pauseOnHover: true,
-      },
-    });
-  };
   return (
     <Hidden smDown>
       <div className={classes.sidebarPlaceHolder} />
@@ -89,7 +73,6 @@ function Sidebar() {
               return (
                 <Tooltip title={val.title} enterDelay={200} key={val.link}>
                   <MenuItem
-                    onClick={() => handleOnClick("mAGO32Lu1")}
                     key={val.link}
                     component={Link}
                     to={val.link}

@@ -14,6 +14,7 @@ const useStyles = makeStyles(() => ({
 
 function PingPopup() {
   const classes = useStyles();
+
   return ReactDOM.createPortal(
     <div className={classes.popupContainer}>
       <ReactNotification />

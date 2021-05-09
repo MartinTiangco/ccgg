@@ -1,13 +1,16 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Card, Grid, Typography } from "@material-ui/core";
 import { useAuth0 } from "@auth0/auth0-react";
+import { store } from "react-notifications-component";
+import io from "socket.io-client";
 import FriendsList from "./FriendsList.js";
+import PingPopupContent from "../PingPopup/PingPopupContent";
 
 // remove this/change this once integrated with backend
 const testFriends = [
-  { username: "bobbobobobobobobob", summonerName: "bob1111112222" },
-  { username: "bob1", summonerName: "bob2" },
+  { username: "testMAGO32Lu1", summonerName: "testMAGO32Lu1" },
+  { username: "mAGO32Lu1", summonerName: "mAGO32Lu1" },
   { username: "bob3", summonerName: "bob4" },
   { username: "bobbobobobobobobobobobob", summonerName: "bob111111" },
   { username: "bob", summonerName: "bob2" },
@@ -50,11 +53,45 @@ const useStyles = makeStyles((theme) => ({
 const FriendsComponent = () => {
   const classes = useStyles();
   const { user, isLoading } = useAuth0();
+  const [pingedBy, setPingedBy] = useState("");
+  const socketRef = useRef();
 
   // If the auth0 context is still loading, return blank page
   if (isLoading) {
     return <div />;
   }
+
+  const username = user["https://cc.gg/user_metadata"].summonerName;
+
+  // Handler for pinging friends
+  const pingByFriend = (pingedByName) => {
+    store.addNotification({
+      content: <PingPopupContent pingedBy={pingedByName} />,
+      type: "default", // 'default', 'success', 'info', 'warning'
+      container: "top-right", // where to position the notifications
+      width: 500,
+      animationIn: ["animate__animated animate__fadeIn"], // `animate.css v4` classes
+      animationOut: ["animate__animated animate__fadeOut"], // `animate.css v4` classes
+      dismiss: {
+        duration: 3000,
+        pauseOnHover: true,
+      },
+    });
+  };
+
+  useEffect(() => {
+    socketRef.current = io.connect("http://localhost:8000");
+    socketRef.current?.emit("joinRoom", username);
+    socketRef.current.on("ping", (name) => {
+      pingByFriend(name);
+      setPingedBy(name);
+    });
+    return () => socketRef.current.disconnect();
+  }, [pingedBy]);
+
+  const handlePingFriend = (to) => {
+    socketRef.current?.emit("ping", { from: username, to });
+  };
 
   return (
     <Grid container className={classes.root}>
@@ -82,7 +119,10 @@ const FriendsComponent = () => {
         </Grid>
         <Grid item>
           <Card className={classes.card} raised>
-            <FriendsList friends={testFriends} />
+            <FriendsList
+              friends={testFriends}
+              handlePingFriend={handlePingFriend}
+            />
           </Card>
         </Grid>
       </Grid>

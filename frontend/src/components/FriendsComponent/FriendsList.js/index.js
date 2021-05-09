@@ -62,7 +62,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const FriendsList = ({ friends }) => {
+const FriendsList = ({ friends, handlePingFriend }) => {
   const classes = useStyles();
 
   // eslint-disable-next-line
@@ -82,10 +82,6 @@ const FriendsList = ({ friends }) => {
     </Grid>
   );
 
-  const handlePingFriend = () => {
-    // TODO WHAT HAPPENS WHEN A FRIEND IS PINGED???
-  };
-
   const FriendsComponent = friends.map((friend) => {
     const { username, summonerName } = friend;
 
@@ -104,7 +100,12 @@ const FriendsList = ({ friends }) => {
           </Grid>
           <Grid container item xs={1}>
             <Tooltip title="Ping Friend">
-              <Button color="secondary" onClick={handlePingFriend}>
+              <Button
+                color="secondary"
+                onClick={() => {
+                  handlePingFriend(summonerName);
+                }}
+              >
                 <img
                   src={missingIcon}
                   alt="Ping Icon"

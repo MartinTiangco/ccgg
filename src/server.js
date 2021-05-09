@@ -11,7 +11,7 @@ const logger = require("morgan");
 
 dontenv.config();
 const port = process.env.PORT || "3001";
-
+const socketPort = process.env.SOCKETPORT || "8000";
 const resolvedDirPath = path.resolve("./frontend/build");
 const resolvedPath = path.resolve("./frontend/build/index.html");
 
@@ -20,6 +20,31 @@ app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+
+const cors = require("cors");
+
+app.use(cors());
+
+// Socket IO Implementation for Pinging
+const http = require("http").createServer(app);
+const io = require("socket.io")(http, {
+  cors: {
+    origin: "*",
+  },
+});
+// Define the socket io connection behaviour
+io.on("connection", (socket) => {
+  // Join your own room
+  socket.on("joinRoom", (username) => {
+    socket.join(username);
+  });
+
+  // Server receives pings, and it redirects it to the room
+  socket.on("ping", ({ from, to }) => {
+    io.to(to).emit("ping", from);
+  });
+});
+http.listen(socketPort); // not 'app.listen'!
 
 // use API routers for different URLs
 app.use("/", routes);
