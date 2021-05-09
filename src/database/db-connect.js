@@ -17,7 +17,7 @@ async function connectToDatabase() {
     // Connect to database
     return mongoose.connect(
       mongoDB,
-      { useNewUrlParser: true, useUnifiedTopology: true },
+      { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true },
       () => {
         console.log("Connected to MongoDB");
       }
@@ -33,6 +33,7 @@ export const connectToLocalDatabase = (
   mongoose.connect(connectionString, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
+    useCreateIndex: true,
   });
 
 export default connectToDatabase;

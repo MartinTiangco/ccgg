@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Avatar, Box, Button, Card, Grid, Typography } from "@material-ui/core";
 import RefreshIcon from "@material-ui/icons/Refresh";
@@ -29,9 +29,36 @@ const useStyles = makeStyles((theme) => ({
 
 const Header = ({ summonerInfo }) => {
   const classes = useStyles();
+  const [currentTimeOfClick, setCurrentTimeOfClick] = useState(Date.now());
   const { summonerName, profileId } = summonerInfo;
 
   const iconSrc = `${ddragonProfileIcon}${profileId}.png`;
+
+  // This controls how many times the user clicks on the Update button (once every 2 minutes).
+  // This controls the usages of the Riot API because there is a rate limit we have to adhere to.
+  const handleOnClick = () => {
+    const timeOfClick = Date.now();
+
+    const diffTimeOfPreviousClickInSeconds = Math.round(
+      (timeOfClick - currentTimeOfClick) / 1000
+    );
+
+    const nowDatePlusTwoMin = currentTimeOfClick + 120 * 1000;
+    const secondsToWaitUntil2Min = Math.round(
+      (nowDatePlusTwoMin - timeOfClick) / 1000
+    );
+    if (diffTimeOfPreviousClickInSeconds < 120) {
+      // eslint-disable-next-line no-alert
+      alert(
+        `You have already updated ${diffTimeOfPreviousClickInSeconds} seconds ago! Please try again in ${secondsToWaitUntil2Min} seconds.`
+      );
+      return;
+    }
+
+    setCurrentTimeOfClick(timeOfClick);
+
+    // call backend after this
+  };
 
   return (
     <Grid container item alignItems="center" justify="flex-start" spacing={2}>
@@ -68,7 +95,11 @@ const Header = ({ summonerInfo }) => {
               </Typography>
             </Grid>
             <Grid item>
-              <Button variant="contained" color="primary">
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={handleOnClick}
+              >
                 <RefreshIcon /> Update
               </Button>
             </Grid>
