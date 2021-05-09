@@ -13,6 +13,8 @@ export const addUser = async (newUser) => {
     username: newUser.username,
     sub: newUser.sub,
     summonerName: newUser.summonerName,
+    summonerId: newUser.summonerId,
+    accountId: newUser.accountId,
     region: newUser.region,
   });
   return HTTP_NO_CONTENT;
@@ -23,5 +25,3 @@ export const retrieveUser = async (sub) => {
   const user = await User.findOne({ sub });
   return user;
 };
-
-// export default { retrieveUser, addUser };
