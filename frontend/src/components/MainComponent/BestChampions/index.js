@@ -11,6 +11,7 @@ import {
 } from "@material-ui/core";
 import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
 import gameTypes from "./constants";
+import defaultData from "./testData";
 
 const ddragonChamps = `http://ddragon.leagueoflegends.com/cdn/11.9.1/img/champion/`;
 const { RANKED, NORMAL, OTHERS } = gameTypes;
@@ -69,7 +70,12 @@ const TabPanel = (props) => {
   );
 };
 
-const BestChampions = ({ championStats }) => {
+const BestChampions = ({ bestChampions }) => {
+  let stats = defaultData;
+  if (bestChampions) {
+    stats = bestChampions;
+  }
+
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
 
@@ -97,21 +103,32 @@ const BestChampions = ({ championStats }) => {
     }
 
     return champions.slice(0, maxNumChampionsShown).map((entry, index) => {
-      const { champion, csTotal, kills, deaths, assists, wr, games } = entry;
+      const {
+        championName,
+        championImage,
+        avgCS,
+        avgKills,
+        avgDeaths,
+        avgAssists,
+        winPercent,
+        totalMatches,
+      } = entry;
 
-      const displayCs = `Avg. CS ${csTotal}`;
+      const displayCs = `Avg. CS ${Math.round(avgCS)}`;
       const kda = `${
-        Math.round(((kills + assists) / deaths + Number.EPSILON) * 100) / 100
+        Math.round(
+          ((avgKills + avgAssists) / avgDeaths + Number.EPSILON) * 100
+        ) / 100
       }`;
 
       // Wukong's name in the Riot API is annoyingly named MonkeyKing, hence we have to consider this edge case
-      const championName = champion === "MonkeyKing" ? "Wukong" : champion;
+      const champion = championName === "MonkeyKing" ? "Wukong" : championName;
 
       // let outerGridClassNames = classes.outerGrid;
       const outerGridClassNames = index > 0 ? classes.firstContainer : "";
 
       return (
-        <div key={`${queueTypeConstant}-${championName}`}>
+        <div key={`${queueTypeConstant}-${champion}`}>
           <Grid
             className={outerGridClassNames}
             item
@@ -122,14 +139,14 @@ const BestChampions = ({ championStats }) => {
             <Grid item container direction="column" xs={2}>
               <img
                 className={classes.img}
-                src={`${ddragonChamps}${champion}.png`}
-                alt={championName}
+                src={`${ddragonChamps}${championImage}`}
+                alt={champion}
               />
             </Grid>
 
             <Grid item container direction="column" xs={4}>
               <Typography className={classes.championText} variant="h5">
-                {championName}
+                {champion}
               </Typography>
               <Typography className={classes.bottomText}>
                 {displayCs}
@@ -139,17 +156,19 @@ const BestChampions = ({ championStats }) => {
               <Typography
                 className={classes.kdaWinrateText}
               >{`${kda}:1 KDA`}</Typography>
-              <Typography
-                className={classes.bottomText}
-              >{`${kills}/${deaths}/${assists}`}</Typography>
+              <Typography className={classes.bottomText}>{`${Math.round(
+                avgKills
+              )}/${Math.round(avgDeaths)}/${Math.round(
+                avgAssists
+              )}`}</Typography>
             </Grid>
             <Grid item container direction="column" xs={3}>
-              <Typography
-                className={classes.kdaWinrateText}
-              >{`${wr}%`}</Typography>
+              <Typography className={classes.kdaWinrateText}>{`${Math.round(
+                winPercent
+              )}%`}</Typography>
               <Typography
                 className={classes.bottomText}
-              >{`${games} games`}</Typography>
+              >{`${totalMatches} games`}</Typography>
             </Grid>
           </Grid>
           <Divider className={classes.divider} />
@@ -159,15 +178,15 @@ const BestChampions = ({ championStats }) => {
   };
 
   const rankedStats = getDisplay(
-    championStats.find(({ type }) => type === RANKED),
+    stats.find(({ type }) => type === RANKED),
     RANKED
   );
   const normalStats = getDisplay(
-    championStats.find(({ type }) => type === NORMAL),
+    stats.find(({ type }) => type === NORMAL),
     NORMAL
   );
   const otherStats = getDisplay(
-    championStats.find(({ type }) => type === OTHERS),
+    stats.find(({ type }) => type === OTHERS),
     OTHERS
   );
 

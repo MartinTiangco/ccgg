@@ -18,6 +18,7 @@ import Items from "./items";
 import Participants from "./participants";
 
 import gamemodeConstants from "../constants";
+import defaultMatches from "./testData";
 
 const useStyles = makeStyles((theme) => ({
   card: {
@@ -41,6 +42,12 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const RecentMatches = ({ recentMatches }) => {
+  let matches;
+  matches = defaultMatches;
+  if (recentMatches) {
+    matches = recentMatches;
+  }
+
   const classes = useStyles();
 
   const [gamemodeSelect, setGamemodeSelect] = React.useState(
@@ -66,8 +73,8 @@ const RecentMatches = ({ recentMatches }) => {
 
   const filteredRecentMatches =
     gamemodeSelect !== gamemodeConstants.showAll
-      ? recentMatches.filter((match) => match.gameMode === gamemodeSelect)
-      : recentMatches;
+      ? matches.filter((match) => match.gameMode === gamemodeSelect)
+      : matches;
 
   const fullMatchesComponent = filteredRecentMatches.map((match) => {
     const {
@@ -77,8 +84,8 @@ const RecentMatches = ({ recentMatches }) => {
       gameDuration,
       championName,
       championImage,
-      spell1,
-      spell2,
+      spell1Image,
+      spell2Image,
       win,
       item0,
       item1,
@@ -122,8 +129,8 @@ const RecentMatches = ({ recentMatches }) => {
             <Champion
               championName={championName}
               championImage={championImage}
-              spell1={spell1}
-              spell2={spell2}
+              spell1Image={spell1Image}
+              spell2Image={spell2Image}
               primaryRuneImage={primaryRuneImage}
               secondaryRuneImage={secondaryRuneImage}
               champLevel={champLevel}

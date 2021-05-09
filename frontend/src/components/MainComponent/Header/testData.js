@@ -1,4 +1,4 @@
 export default {
-  summonerName: "Plasmatops",
+  summonerName: "",
   profileId: 4904,
 };

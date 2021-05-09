@@ -3,7 +3,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 
 const audience = process.env.REACT_APP_AUTH0_AUDIENCE;
 
-const callPrivateApi = (url, options = {}) => {
+const callPrivateApi = (url) => {
   const { getAccessTokenSilently } = useAuth0();
   const [state, setState] = useState({
     error: null,
@@ -15,12 +15,10 @@ const callPrivateApi = (url, options = {}) => {
   useEffect(() => {
     (async () => {
       try {
-        const { ...fetchOptions } = options;
         const accessToken = await getAccessTokenSilently({ audience });
         const res = await fetch(url, {
-          ...fetchOptions,
+          method: "get",
           headers: {
-            ...fetchOptions.headers,
             // Add the Authorization header to the existing headers
             Authorization: `Bearer ${accessToken}`,
           },
@@ -46,5 +44,4 @@ const callPrivateApi = (url, options = {}) => {
     refresh: () => setRefreshIndex(refreshIndex + 1),
   };
 };
-
 export default callPrivateApi;

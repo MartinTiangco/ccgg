@@ -35,23 +35,16 @@ const testData = [
 ];
 
 it("with no ranked info", () => {
-  const tree = renderer.create(<Rank stats={testDataUnranked} />).toJSON();
+  const tree = renderer.create(<Rank rank={testDataUnranked} />).toJSON();
   expect(tree).toMatchSnapshot();
 });
 
 it("with ranked solo info", () => {
-  const rankedSolo = testData.find(
-    (entry) => entry.queueType === "RANKED_SOLO_5x5"
-  );
-
-  const tree = renderer.create(<Rank stats={rankedSolo} />).toJSON();
+  const tree = renderer.create(<Rank rank={testData} />).toJSON();
   expect(tree).toMatchSnapshot();
 });
 
 it("with ranked flex info", () => {
-  const rankedFlex = testData.find(
-    (entry) => entry.queueType === "RANKED_FLEX_SR"
-  );
-  const tree = renderer.create(<Rank stats={rankedFlex} flex />).toJSON();
+  const tree = renderer.create(<Rank rank={testData} isFlex />).toJSON();
   expect(tree).toMatchSnapshot();
 });

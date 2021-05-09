@@ -1,5 +1,4 @@
 import renderer from "react-test-renderer";
-import { shallow } from "enzyme";
 import React from "react";
 import Summary from "../index";
 
@@ -587,17 +586,4 @@ const matches = [
 it("snapshot with no games", () => {
   const tree = renderer.create(<Summary matches={noMatches} />).toJSON();
   expect(tree).toMatchSnapshot();
-});
-
-it("shallow test on summary page with valid matches", () => {
-  const wrapper = shallow(<Summary matches={matches} />);
-
-  expect(wrapper).toContainExactlyOneMatchingElement("Charts");
-  expect(wrapper).toIncludeText("Recent Performance");
-  expect(wrapper).toIncludeText("Filter By");
-  expect(wrapper).toIncludeText("Show All");
-  expect(wrapper).toIncludeText("Ranked Solo");
-  expect(wrapper).toIncludeText("Ranked Flex");
-  expect(wrapper).toIncludeText("Normal");
-  expect(wrapper).toIncludeText("ARAM");
 });

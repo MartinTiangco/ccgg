@@ -25,8 +25,8 @@ const useStyles = makeStyles((theme) => ({
 const Champion = ({
   championName,
   championImage,
-  spell1,
-  spell2,
+  spell1Image,
+  spell2Image,
   primaryRuneImage,
   secondaryRuneImage,
 }) => {
@@ -37,8 +37,8 @@ const Champion = ({
   const primaryRuneSrc = `${ddragonRunes}${primaryRuneImage}`;
   const secondaryRunePathSrc = `${ddragonRunes}${secondaryRuneImage}`;
 
-  const summ1Src = `${ddragonSummoners}${spell1}`;
-  const summ2Src = `${ddragonSummoners}${spell2}`;
+  const summ1Src = `${ddragonSummoners}${spell1Image}`;
+  const summ2Src = `${ddragonSummoners}${spell2Image}`;
 
   return (
     <Grid

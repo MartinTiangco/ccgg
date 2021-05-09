@@ -38,8 +38,18 @@ const BarChart = (prop) => {
       <ArgumentAxis />
       <ValueAxis tickSize={1} showTicks />
       <Palette scheme={scheme} />
-      <BarSeries name="wins" valueField="wins" argumentField="date" />
-      <BarSeries name="losses" valueField="losses" argumentField="date" />
+      <BarSeries
+        name="wins"
+        valueField="wins"
+        key="wins"
+        argumentField="date"
+      />
+      <BarSeries
+        name="losses"
+        valueField="losses"
+        key="wins"
+        argumentField="date"
+      />
       <Stack stacks={[{ series: ["losses", "wins"] }]} />
       <Animation />
       <EventTracker />

@@ -33,6 +33,12 @@ export function getRunes(primaryRuneId, primaryRunePathId, secondaryRuneId) {
   let secondaryRuneImage = "";
   let primaryRuneImage = "";
 
+  if (!primaryRuneId || !secondaryRuneId) {
+    return {
+      primaryRuneImage,
+      secondaryRuneImage,
+    };
+  }
   // First retrieve primary rune data and the secondary rune image name
   // eslint-disable-next-line no-restricted-syntax
   for (const runeObject of runes) {

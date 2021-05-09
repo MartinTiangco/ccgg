@@ -8,6 +8,6 @@ const summonerInfo = {
 };
 
 it("snapshot with provided summonerName and profileId", () => {
-  const tree = renderer.create(<Header summonerInfo={summonerInfo} />).toJSON();
+  const tree = renderer.create(<Header userInfo={summonerInfo} />).toJSON();
   expect(tree).toMatchSnapshot();
 });

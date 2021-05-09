@@ -40,11 +40,29 @@ const useStyles = makeStyles(() => ({
 }));
 
 // Component showing the Rank of a player in either Ranked Solo or Ranked Flex modes.
-const Rank = ({ isFlex, stats = defaultStats }) => {
+const Rank = ({ isFlex, rank: rankStatus }) => {
+  let statsToShow = defaultStats;
   const classes = useStyles();
-  const { queueType, tier, rank, leaguePoints, wins, losses } = stats;
 
-  const isRanked = stats.tier !== defaultStats.tier;
+  if (rankStatus && rankStatus.length !== 0) {
+    const [rankedSolo, rankedFlex] = rankStatus;
+    if (isFlex) {
+      statsToShow = rankedFlex;
+    } else {
+      statsToShow = rankedSolo;
+    }
+  }
+
+  const {
+    queueType,
+    tier,
+    rank: division,
+    leaguePoints,
+    wins,
+    losses,
+  } = statsToShow;
+
+  const isRanked = tier !== defaultStats.tier;
   const winRatio = isRanked ? Math.round((wins / (wins + losses)) * 100) : 0;
 
   // img element
@@ -67,7 +85,7 @@ const Rank = ({ isFlex, stats = defaultStats }) => {
   const testClassNames = isFlex && ` ${classes.textFlex}`; // smaller font size for flex
   const displayQueueType = isFlex ? "Ranked Flex" : "Ranked Solo";
   const displayRankLP = isRanked
-    ? `${tier} ${rank} / ${leaguePoints} LP`
+    ? `${tier} ${division} / ${leaguePoints} LP`
     : "Unranked";
   const displayWR = `${winRatio}% WR | ${wins + losses} games`;
 

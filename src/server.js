@@ -2,6 +2,7 @@ import createError from "http-errors";
 import express from "express";
 import path from "path";
 import cookieParser from "cookie-parser";
+import cors from "cors";
 import dontenv from "dotenv";
 
 import connectToDatabase from "./database/db-connect";
@@ -20,8 +21,6 @@ app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-
-const cors = require("cors");
 
 app.use(cors());
 

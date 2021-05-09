@@ -1,85 +1,12 @@
-import React from "react";
+import React, { useContext } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { Card, Grid } from "@material-ui/core";
+import { Card, Grid, CircularProgress } from "@material-ui/core";
 import Rank from "./Rank";
 import BestChampions from "./BestChampions";
 import RecentMatches from "./RecentMatches";
 import Header from "./Header";
 import Summary from "./Summary";
-
-import testMatches from "./RecentMatches/testData";
-import summonerInfo from "./Header/testData";
-import matches from "./Summary/testMatches";
-import championStats from "./BestChampions/testData";
-
-// LEAGUE-V4 returns a set of LeagueEntryDTO (a LeagueEntryDTO includes a rank)
-// i.e. if a player has a RankedSolo and RankedFlex rank it'll return two LeagueEntryDTOs
-
-// TODO - this is dummy data. We can remove this after we have a Context and the Riot API.
-// btw this is from the summoner AU Dogs (randomly found one with both a solo and flex ranks)
-// const unranked = [];
-// const solo = [
-//   {
-//     queueType: "RANKED_SOLO_5x5",
-//     tier: "GOLD",
-//     rank: "I",
-//     summonerId: "EXXJEL_O4q_DiFvzHjjjw7NFi957AvQkb14Nzf7rBq-Ung",
-//     summonerName: "AU Dogs",
-//     leaguePoints: 15,
-//     wins: 205,
-//     losses: 218,
-//     veteran: false,
-//     inactive: false,
-//     freshBlood: false,
-//     hotStreak: false,
-//   },
-// ];
-// const flex = [
-//   {
-//     queueType: "RANKED_FLEX_SR",
-//     tier: "SILVER",
-//     rank: "I",
-//     summonerId: "EXXJEL_O4q_DiFvzHjjjw7NFi957AvQkb14Nzf7rBq-Ung",
-//     summonerName: "AU Dogs",
-//     leaguePoints: 77,
-//     wins: 193,
-//     losses: 204,
-//     veteran: false,
-//     inactive: false,
-//     freshBlood: true,
-//     hotStreak: true,
-//   },
-// ];
-const leagueEntrySet = [
-  {
-    queueType: "RANKED_SOLO_5x5",
-    tier: "GOLD",
-    rank: "I",
-    summonerId: "EXXJEL_O4q_DiFvzHjjjw7NFi957AvQkb14Nzf7rBq-Ung",
-    summonerName: "AU Dogs",
-    leaguePoints: 15,
-    wins: 205,
-    losses: 218,
-    veteran: false,
-    inactive: false,
-    freshBlood: false,
-    hotStreak: false,
-  },
-  {
-    queueType: "RANKED_FLEX_SR",
-    tier: "SILVER",
-    rank: "I",
-    summonerId: "EXXJEL_O4q_DiFvzHjjjw7NFi957AvQkb14Nzf7rBq-Ung",
-    summonerName: "AU Dogs",
-    leaguePoints: 77,
-    wins: 193,
-    losses: 204,
-    veteran: false,
-    inactive: false,
-    freshBlood: true,
-    hotStreak: true,
-  },
-];
+import { AppContext } from "../../context";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -105,14 +32,23 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const MainComponent = () => {
-  const classes = useStyles();
-  const rankedSolo = leagueEntrySet.find(
-    (entry) => entry.queueType === "RANKED_SOLO_5x5"
-  );
-  const rankedFlex = leagueEntrySet.find(
-    (entry) => entry.queueType === "RANKED_FLEX_SR"
-  );
+  const {
+    matchSummary,
+    recentMatches,
+    userInfo,
+    bestChampions,
+    rank,
+    isloading,
+    updateAll,
+  } = useContext(AppContext);
 
+  updateAll();
+
+  const classes = useStyles();
+
+  if (isloading) {
+    return <CircularProgress />;
+  }
   return (
     <Grid container className={classes.root}>
       <Grid
@@ -126,16 +62,16 @@ const MainComponent = () => {
         spacing={2}
       >
         <Grid item>
-          <Header summonerInfo={summonerInfo} />
+          <Header userInfo={userInfo} />
         </Grid>
         <Grid item>
           <Card className={classes.card} raised>
-            <Summary matches={matches} />
+            <Summary matchSummary={matchSummary} />
           </Card>
         </Grid>
         <Grid item>
           <Card className={classes.card} raised>
-            <RecentMatches recentMatches={testMatches} />
+            <RecentMatches recentMatches={recentMatches} />
           </Card>
         </Grid>
       </Grid>
@@ -153,16 +89,16 @@ const MainComponent = () => {
       >
         <Grid item>
           <Card className={classes.card} raised>
-            <Rank stats={rankedSolo} />
+            <Rank rank={rank} />
           </Card>
         </Grid>
         <Grid item>
           <Card className={classes.card} raised>
-            <Rank stats={rankedFlex} isFlex />
+            <Rank rank={rank} isFlex />
           </Card>
         </Grid>
         <Grid item>
-          <BestChampions championStats={championStats} />
+          <BestChampions bestChampions={bestChampions} />
         </Grid>
       </Grid>
     </Grid>

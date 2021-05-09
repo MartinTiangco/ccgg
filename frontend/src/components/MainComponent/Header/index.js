@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
+import { useAuth0 } from "@auth0/auth0-react";
 import { Avatar, Box, Button, Card, Grid, Typography } from "@material-ui/core";
 import RefreshIcon from "@material-ui/icons/Refresh";
+import refreshMatches from "../../../context/refreshMatches";
+import defaultData from "./testData";
 
 const ddragonProfileIcon =
   "http://ddragon.leagueoflegends.com/cdn/11.9.1/img/profileicon/";
@@ -27,10 +30,16 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Header = ({ summonerInfo }) => {
+const Header = ({ userInfo }) => {
+  const { getAccessTokenSilently } = useAuth0();
+  let summoner = defaultData;
+  if (userInfo) {
+    summoner = userInfo;
+  }
+
   const classes = useStyles();
+  const { summonerName, profileId } = summoner;
   const [currentTimeOfClick, setCurrentTimeOfClick] = useState(Date.now());
-  const { summonerName, profileId } = summonerInfo;
 
   const iconSrc = `${ddragonProfileIcon}${profileId}.png`;
 
@@ -57,7 +66,7 @@ const Header = ({ summonerInfo }) => {
 
     setCurrentTimeOfClick(timeOfClick);
 
-    // call backend after this
+    refreshMatches(getAccessTokenSilently);
   };
 
   return (

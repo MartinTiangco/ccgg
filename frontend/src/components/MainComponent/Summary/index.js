@@ -11,6 +11,7 @@ import {
 import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
 import Charts from "./Charts";
 import gamemodeConstants from "../constants";
+import defaultMatches from "./testMatches";
 
 const useStyles = makeStyles((theme) => ({
   card: {
@@ -33,8 +34,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Summary = (prop) => {
-  const { matches } = prop;
+const Summary = ({ matchSummary }) => {
+  let matches = defaultMatches;
+  if (matchSummary) {
+    matches = matchSummary;
+  }
 
   const classes = useStyles();
 

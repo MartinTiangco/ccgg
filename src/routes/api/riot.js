@@ -52,15 +52,16 @@ router.get("/refreshMatches", checkJwt, async (req, res) => {
         if (!err) {
           await Promise.all(
             matchResponse.matches.map(async (match) => {
-              matchArray.push(
-                await getPlayerMatchData(
-                  match.gameId,
-                  accountId,
-                  region,
-                  riotRequest,
-                  userSub
-                )
+              const matchData = await getPlayerMatchData(
+                match.gameId,
+                accountId,
+                region,
+                riotRequest,
+                userSub
               );
+              if (!matchData.gameMode.includes("TUTORIAL")) {
+                matchArray.push(matchData);
+              }
             })
           );
           await addMatches(userSub, matchArray);

@@ -6,6 +6,7 @@ import { BrowserRouter } from "react-router-dom";
 import Auth0ProviderWithHistory from "./auth/Auth0ProviderWithHistory";
 import App from "./App";
 import theme from "./theme";
+import { AppContextProvider } from "./context";
 
 ReactDOM.render(
   <BrowserRouter>
@@ -13,7 +14,9 @@ ReactDOM.render(
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <React.StrictMode>
-          <App />
+          <AppContextProvider>
+            <App />
+          </AppContextProvider>
         </React.StrictMode>
       </ThemeProvider>
     </Auth0ProviderWithHistory>
