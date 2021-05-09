@@ -1,7 +1,7 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Link, useLocation } from "react-router-dom";
-import { Box, Tooltip, MenuItem, MenuList, Hidden } from "@material-ui/core";
+import { Box, Tooltip, MenuItem, MenuList } from "@material-ui/core";
 import clsx from "clsx";
 
 import { SidebarData } from "./SidebarData";
@@ -57,7 +57,7 @@ function Sidebar() {
   const location = useLocation();
 
   return (
-    <Hidden smDown>
+    <>
       <div className={classes.sidebarPlaceHolder} />
       <div className={classes.sidebarRoot}>
         <Box display="flex" flexDirection="column" className={classes.logoBox}>
@@ -91,7 +91,7 @@ function Sidebar() {
         </MenuList>
         <AuthenticationButton />
       </div>
-    </Hidden>
+    </>
   );
 }
 

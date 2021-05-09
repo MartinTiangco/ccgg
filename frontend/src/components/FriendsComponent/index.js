@@ -56,12 +56,7 @@ const FriendsComponent = () => {
   const [pingedBy, setPingedBy] = useState("");
   const socketRef = useRef();
 
-  // If the auth0 context is still loading, return blank page
-  if (isLoading) {
-    return <div />;
-  }
-
-  const username = user["https://cc.gg/user_metadata"].summonerName;
+  const summonerName = user?.["https://cc.gg/user_metadata"]?.summonerName;
 
   // Handler for pinging friends
   const pingByFriend = (pingedByName) => {
@@ -81,7 +76,7 @@ const FriendsComponent = () => {
 
   useEffect(() => {
     socketRef.current = io.connect("http://localhost:8000");
-    socketRef.current?.emit("joinRoom", username);
+    socketRef.current?.emit("joinRoom", summonerName);
     socketRef.current.on("ping", (name) => {
       pingByFriend(name);
       setPingedBy(name);
@@ -89,44 +84,53 @@ const FriendsComponent = () => {
     return () => socketRef.current.disconnect();
   }, [pingedBy]);
 
+  // // If the auth0 context is still loading, return blank page
+  // if (isLoading) {
+  //   return <div />;
+  // }
+
   const handlePingFriend = (to) => {
-    socketRef.current?.emit("ping", { from: username, to });
+    socketRef.current?.emit("ping", { from: summonerName, to });
   };
 
   return (
-    <Grid container className={classes.root}>
-      <Grid
-        container
-        item
-        className={classes.innerGrid}
-        direction="column"
-        xs={10}
-        sm={7}
-        md={8}
-        spacing={2}
-      >
-        <Grid
-          container
-          item
-          direction="row"
-          justify="space-between"
-          alignItems="center"
-        >
-          <Typography variant="h4">Friends List</Typography>
-          <Typography variant="h4">
-            Username: {user["https://cc.gg/user_metadata"].summonerName}
-          </Typography>
+    <>
+      {isLoading ? (
+        <div />
+      ) : (
+        <Grid container className={classes.root}>
+          <Grid
+            container
+            item
+            className={classes.innerGrid}
+            direction="column"
+            xs={10}
+            sm={7}
+            md={8}
+            spacing={2}
+          >
+            <Grid
+              container
+              item
+              direction="row"
+              justify="space-between"
+              alignItems="center"
+            >
+              <Typography variant="h4">Friends List</Typography>
+              <Typography variant="h4">Username: {summonerName}</Typography>
+            </Grid>
+            <Grid item>
+              <Card className={classes.card} raised>
+                <FriendsList
+                  friends={testFriends}
+                  handlePingFriend={handlePingFriend}
+                />
+              </Card>
+            </Grid>
+          </Grid>
         </Grid>
-        <Grid item>
-          <Card className={classes.card} raised>
-            <FriendsList
-              friends={testFriends}
-              handlePingFriend={handlePingFriend}
-            />
-          </Card>
-        </Grid>
-      </Grid>
-    </Grid>
+      )}
+    </>
   );
 };
 
