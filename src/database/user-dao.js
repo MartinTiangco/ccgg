@@ -25,3 +25,9 @@ export const retrieveUser = async (sub) => {
   const user = await User.findOne({ sub });
   return user;
 };
+
+// Update a user's details
+export const updateUser = async (sub, changes) => {
+  const newChanges = { $set: changes };
+  await User.updateOne({ sub }, newChanges);
+};
