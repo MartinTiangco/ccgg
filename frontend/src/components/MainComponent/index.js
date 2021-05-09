@@ -10,6 +10,7 @@ import Summary from "./Summary";
 import testMatches from "./RecentMatches/testData";
 import summonerInfo from "./Header/testData";
 import matches from "./Summary/testMatches";
+import championStats from "./BestChampions/testData";
 
 // LEAGUE-V4 returns a set of LeagueEntryDTO (a LeagueEntryDTO includes a rank)
 // i.e. if a player has a RankedSolo and RankedFlex rank it'll return two LeagueEntryDTOs
@@ -161,7 +162,7 @@ const MainComponent = () => {
           </Card>
         </Grid>
         <Grid item>
-          <BestChampions />
+          <BestChampions championStats={championStats} />
         </Grid>
       </Grid>
     </Grid>

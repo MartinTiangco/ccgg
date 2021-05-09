@@ -16,123 +16,6 @@ const ddragonChamps = `http://ddragon.leagueoflegends.com/cdn/11.9.1/img/champio
 const { RANKED, NORMAL, OTHERS } = gameTypes;
 const maxNumChampionsShown = 8;
 
-// dummy data
-const championStats = [
-  {
-    type: "ranked",
-    champions: [
-      {
-        champion: "Ekko",
-        csTotal: 178.6,
-        kills: 7,
-        deaths: 3,
-        assists: 17,
-        wr: 58,
-        games: 137,
-      },
-      {
-        champion: "Syndra",
-        csTotal: 178.6,
-        kills: 7,
-        deaths: 3,
-        assists: 17,
-        wr: 58,
-        games: 137,
-      },
-      {
-        champion: "Renekton",
-        csTotal: 178.6,
-        kills: 7,
-        deaths: 3,
-        assists: 17,
-        wr: 58,
-        games: 137,
-      },
-      {
-        champion: "Annie",
-        csTotal: 178.6,
-        kills: 7,
-        deaths: 3,
-        assists: 17,
-        wr: 58,
-        games: 137,
-      },
-      {
-        champion: "Xerath",
-        csTotal: 178.6,
-        kills: 7,
-        deaths: 3,
-        assists: 17,
-        wr: 58,
-        games: 137,
-      },
-      {
-        champion: "Orianna",
-        csTotal: 178.6,
-        kills: 7,
-        deaths: 3,
-        assists: 17,
-        wr: 58,
-        games: 137,
-      },
-      {
-        champion: "Galio",
-        csTotal: 178.6,
-        kills: 7,
-        deaths: 3,
-        assists: 17,
-        wr: 58,
-        games: 137,
-      },
-      {
-        champion: "Garen",
-        csTotal: 178.6,
-        kills: 7,
-        deaths: 3,
-        assists: 17,
-        wr: 58,
-        games: 137,
-      },
-      {
-        champion: "Viktor", // this champ shouldn't be shown because there are already max number of champions shown
-        csTotal: 178.6,
-        kills: 7,
-        deaths: 3,
-        assists: 17,
-        wr: 58,
-        games: 137,
-      },
-    ],
-  },
-  {
-    type: "normal",
-    champions: [
-      {
-        champion: "Lucian",
-        csTotal: 178.6,
-        kills: 7,
-        deaths: 3,
-        assists: 17,
-        wr: 58,
-        games: 137,
-      },
-      {
-        champion: "MonkeyKing",
-        csTotal: 178.6,
-        kills: 7,
-        deaths: 3,
-        assists: 17,
-        wr: 58,
-        games: 137,
-      },
-    ],
-  },
-  {
-    type: "others",
-    champions: [],
-  },
-];
-
 const useStyles = makeStyles((theme) => ({
   img: {
     width: "40px",
@@ -186,20 +69,20 @@ const TabPanel = (props) => {
   );
 };
 
-const BestChampions = () => {
+const BestChampions = ({ championStats }) => {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
-  // const { championStats } = props;
 
   const handleChange = (_, newValue) => {
     setValue(newValue);
   };
 
-  const getDisplay = ({ champions }) => {
+  const getDisplay = ({ champions }, queueTypeConstant) => {
     // if no data found
     if (champions.length === 0) {
       return (
         <Grid
+          key={`${queueTypeConstant}-not-found`}
           className={`${classes.firstContainer} ${classes.noDataTab}`}
           item
           container
@@ -228,7 +111,7 @@ const BestChampions = () => {
       const outerGridClassNames = index > 0 ? classes.firstContainer : "";
 
       return (
-        <>
+        <div key={`${queueTypeConstant}-${championName}`}>
           <Grid
             className={outerGridClassNames}
             item
@@ -270,19 +153,22 @@ const BestChampions = () => {
             </Grid>
           </Grid>
           <Divider className={classes.divider} />
-        </>
+        </div>
       );
     });
   };
 
   const rankedStats = getDisplay(
-    championStats.find(({ type }) => type === RANKED)
+    championStats.find(({ type }) => type === RANKED),
+    RANKED
   );
   const normalStats = getDisplay(
-    championStats.find(({ type }) => type === NORMAL)
+    championStats.find(({ type }) => type === NORMAL),
+    NORMAL
   );
   const otherStats = getDisplay(
-    championStats.find(({ type }) => type === OTHERS)
+    championStats.find(({ type }) => type === OTHERS),
+    OTHERS
   );
 
   return (
