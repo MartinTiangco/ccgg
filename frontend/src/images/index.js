@@ -1,3 +1,4 @@
+import missingIcon from "./icons/missing.png";
 import logo192 from "./logos/logo192.png";
 import logo512Inverted from "./logos/logo512-inverted.png";
 import logo512 from "./logos/logo512.png";
@@ -13,6 +14,7 @@ import emblemSILVER from "./ranked-emblems/Emblem_Silver.png";
 import emblemUNRANKED from "./ranked-emblems/Emblem_Unranked.png";
 
 export default {
+  missingIcon,
   logo192,
   logo512Inverted,
   logo512,
